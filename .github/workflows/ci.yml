@@ -12,9 +12,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}  
-
     - name: Incremental Static Analysis with Polaris Action for Pull Request
       if: ${{github.event_name == 'pull_request'}}
       uses: devsecops-test/polaris-action@v1
