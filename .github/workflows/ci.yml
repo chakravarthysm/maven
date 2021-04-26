@@ -7,10 +7,12 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
 
-   - name: Static Analysis with Polaris Action
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Static Analysis with Polaris Action
       uses: devsecops-test/polaris-action@v1
       with:
         polarisServerUrl: ${{secrets.POLARIS_SERVER_URL}}
