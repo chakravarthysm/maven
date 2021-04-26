@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    env:
+      GIT_BRANCH: develop
 
     steps:
     - name: Checkout repository
