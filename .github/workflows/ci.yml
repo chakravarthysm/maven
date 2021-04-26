@@ -18,6 +18,7 @@ jobs:
         polarisServerUrl: ${{secrets.POLARIS_SERVER_URL}}
         polarisAccessToken: ${{secrets.POLARIS_ACCESS_TOKEN}}
         polarisProjectName: maven
+        polarisAdditionalArgs: --coverity-ignore-capture-failure
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
