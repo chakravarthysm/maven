@@ -1,0 +1,84 @@
+name: "Synopsys Intelligent Security Scan"
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+jobs:
+  build:
+    runs-on: self-hosted     
+    steps:
+    - uses: actions/checkout@v2
+    - name: Public IP
+      id: ip
+      uses: haythem/public-ip@v1.2
+
+    - name: Print Public IP
+      run: |
+        echo ${{ steps.ip.outputs.ipv4 }}
+        echo ${{ steps.ip.outputs.ipv6 }}
+        
+    - name: IO Scan
+      id: prescription
+      uses: synopsys-sig/intelligent-security-scan@master
+      with:
+        stage: "IO"
+        ioServerUrl: ${{secrets.IO_SERVER_URL}}
+        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}        
+        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+        workflowVersion: "2021.04.3-alpha"
+        releaseType: "major"
+        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_AUTH_TOKEN}} --sensitive.package.pattern='.*(.java)' --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --io.manifest.url=https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.04.2-alpha/io-manifest-coverity.yml --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
+    
+         
+    - name: Static Analysis with Polaris
+      if: ${{ github.event_name == 'push' && steps.prescription.outputs.sastScan == 'true'}}
+      run: |
+        export POLARIS_SERVER_URL=${{secrets.POLARIS_SERVER_URL}}
+        export POLARIS_ACCESS_TOKEN=${{secrets.POLARIS_ACCESS_TOKEN}}
+        wget -q ${{secrets.POLARIS_SERVER_URL}}/api/tools/polaris_cli-macosx.zip
+        unzip -j -o polaris_cli-macosx.zip -d /tmp
+        /tmp/polaris analyze -w
+        
+    - name: Incremental Static Analysis with Polaris
+      if: ${{ github.event_name == 'pull_request'  && steps.prescription.outputs.sastScan == 'true' }}
+      run: |
+       echo ${{ github.event_name }}
+       URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
+       echo $URL
+       FILES=$(curl -s -X GET -G $URL --header 'Authorization: token ${{secrets.GH_ATOKEN}}' | jq -r '.[] | .filename')
+       echo $FILES | tr " " "\n" > polaris-files-to-scan.txt
+       echo "Files Changed -->"
+       cat polaris-files-to-scan.txt
+       export POLARIS_SERVER_URL=${{ secrets.POLARIS_SERVER_URL}}
+       export POLARIS_ACCESS_TOKEN=${{ secrets.POLARIS_ACCESS_TOKEN}}
+       export POLARIS_FF_ENABLE_COVERITY_INCREMENTAL=true
+       wget -q ${{secrets.POLARIS_SERVER_URL}}/api/tools/polaris_cli-linux64.zip
+       unzip -j -o polaris_cli-linux64.zip -d /tmp
+       export GIT_BRANCH=master
+       chmod +x /tmp/polaris
+       /tmp/polaris analyze -w --coverity-ignore-capture-failure --incremental polaris-files-to-scan.txt | tee polaris-output.txt
+     
+    - name: Software Composition Analysis with Black Duck
+      if: ${{steps.prescription.outputs.scaScan == 'true' }}
+      uses: blackducksoftware/github-action@v2
+      with:
+         args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_TOKEN}}" --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --detect.tools="DETECTOR" --blackduck.trust.cert=true'
+    
+    - name: Synopsys Intelligent Security Scan
+      if: ${{steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true'}}
+      uses: synopsys-sig/intelligent-security-scan@master
+      with:
+        ioServerURL: ${{secrets.IO_SERVER_URL}}
+        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
+        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+        releaseType: "major"
+        workflowVersion: "2021.04.3-alpha"
+        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --sensitive.package.pattern='.*(.java)'--detect.project.name=manojrbsnps/Testproj --detect.project.version.name=1.0 --jira.issues.query=project=DEV-01 --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --io.manifest.url=https://raw.githubusercontent.com/synopsys-sig/io-artifacts/v0.5-alpha/io-manifest-coverity.yml --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
+        stage: "WORKFLOW"
+    - name: Upload SARIF file
+      if: ${{steps.prescription.outputs.sastScan == 'true' }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: workflowengine-results.sarif.json
