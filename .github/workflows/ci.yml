@@ -19,7 +19,7 @@ jobs:
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         releaseType: "major"
         workflowVersion: "2021.04.3-alpha"
-        additionalWorkflowArgs: "--slack.token="something" --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=sig-chakrava/maven --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_TOKEN}} --sensitive.package.pattern='.*(.xml)' --jira.project.name=DEV --jira.api.url=https://dev-io.atlassian.net --jira.username=chakra.mithun@gmail.com --jira.issues.query=project=DEV --blackduck.project.name=maven:1.0.0 --blackduck.url=https://io-blackduck.dev.polaris.synopsys.com --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}}"
+        additionalWorkflowArgs: "--slack.token=something --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=sig-chakrava/maven --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_TOKEN}} --sensitive.package.pattern='.*(.xml)' --jira.project.name=DEV --jira.api.url=https://dev-io.atlassian.net --jira.username=chakra.mithun@gmail.com --jira.issues.query=project=DEV --blackduck.project.name=maven:1.0.0 --blackduck.url=https://io-blackduck.dev.polaris.synopsys.com --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}}"
     
     - name: Static Analysis with Polaris
       if: ${{steps.prescription.outputs.sastScan == 'true'}}
