@@ -22,16 +22,6 @@ jobs:
         releaseType: "major"
         additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_AUTH_TOKEN}} --sensitive.package.pattern='.*(.java)' --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --io.manifest.url=https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.04.2-alpha/io-manifest-coverity.yml --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
     
-         
-    - name: Static Analysis with Polaris
-      if: ${{ github.event_name == 'push' && steps.prescription.outputs.sastScan == 'true'}}
-      run: |
-        export POLARIS_SERVER_URL=${{secrets.POLARIS_SERVER_URL}}
-        export POLARIS_ACCESS_TOKEN=${{secrets.POLARIS_ACCESS_TOKEN}}
-        curl -LO https://dev01.dev.polaris.synopsys.com/api/tools/polaris_cli-linux64.zip
-        unzip -j -o polaris_cli-linux64.zip -d /tmp
-        chmod +x /tmp/polaris
-        /tmp/polaris analyze -w
      
     - name: Software Composition Analysis with Black Duck
       if: ${{steps.prescription.outputs.scaScan == 'true' }}
