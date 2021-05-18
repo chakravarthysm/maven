@@ -19,7 +19,7 @@ jobs:
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}        
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         workflowVersion: "2021.04.3-alpha"
-        releaseType: "minor"
+        releaseType: "major"
         additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_AUTH_TOKEN}} --sensitive.package.pattern='.*(.java)' --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --io.manifest.url=https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.04.2-alpha/io-manifest-coverity.yml --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
     
          
