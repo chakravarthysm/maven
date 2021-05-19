@@ -7,7 +7,7 @@
       "projectLanguage": "Java",
       "platformVersion": "Java 11",
       "buildSystem": "Maven",
-      "riskMatrixRevision": "default",
+      "riskMatrixRevision": "Rev1.0",
       "sourceFilePattern": "(?s).*((/[a-z]+)*)/src/main/java(?s).*",
       "sensitivePackagePattern": "(?s).*((/[a-z]+)*)/com/service/([A-Za-z]*).java(?s).*",
       "fileChangeThreshold": 20
