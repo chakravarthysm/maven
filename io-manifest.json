@@ -1,7 +1,7 @@
 {
     "application": {
-      "appId": "devio",
-      "assetId": "devio",
+      "appId": "maven",
+      "assetId": "<<ASSET_ID>>",
       "appType": "Webapp",
       "release": "<<RELEASE_TYPE>>",
       "projectLanguage": "Java",
@@ -15,14 +15,14 @@
     "environment": {
       "enableJira": true,
       "scm": "github",
-      "scmOwner": "Synopsys-SIG-RnD",
-      "scmRepositoryName": "ShoppingCart",
+      "scmOwner": "sig-chakrava",
+      "scmRepositoryName": "maven",
       "scmBranchName": "master",
       "bitbucketUserName": null,
       "bitbucketPassword": null,
       "bitbucketApiUrl": "https://api.bitbucket.org/2.0/repositories/",
       "githubApiUrl": "https://api.github.com/repos/",
-      "githubUsername": "sig-rnd-io-testuser",
+      "githubUsername": "sig-chakrava",
       "githubToken": "<<GITHUB_ACCESS_TOKEN>>",
       "jiraProjectName": "<<JIRA_PROJECT_NAME>>",
       "jiraIssuesQuery": "<<JIRA_ISSUES_QUERY>>",
