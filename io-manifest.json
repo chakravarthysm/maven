@@ -24,10 +24,10 @@
       "githubApiUrl": "https://api.github.com/repos/",
       "githubUsername": "sig-chakrava",
       "githubToken": "<<GITHUB_ACCESS_TOKEN>>",
-      "jiraProjectName": "<<JIRA_PROJECT_NAME>>",
+      "jiraProjectName": "DEV",
       "jiraIssuesQuery": "<<JIRA_ISSUES_QUERY>>",
-      "jiraApiUrl": "<<JIRA_API_URL>>",
-      "jiraUserName": "<<JIRA_USERNAME>>",
+      "jiraApiUrl": "https://dev-io.atlassian.net",
+      "jiraUserName": "chakra.mithun@gmail.com",
       "jiraAuthToken": "<<JIRA_AUTH_TOKEN>>"
     },
     "security": {
@@ -46,23 +46,17 @@
         "connector_name": "jira",
         "fields": {
           "issuetype": "Bug",
-          "projectkey": "<<JIRA_PROJECT_NAME>>",
+          "projectkey": "DEV",
           "assignee": "<<JIRA_ASSIGNEE>>",
-          "url": "<<JIRA_API_URL>>",
-          "username": "<<JIRA_USERNAME>>",
+          "url": "https://dev-io.atlassian.net",
+          "username": "chakra.mithun@gmail.com",
           "authtoken": "<<JIRA_AUTH_TOKEN>>"
         }
       },
       {
         "connector_name": "github",
         "fields": {
-          "file_path": "workflowengine-results.sarif.json",
-          "owner_name": "<<GITHUB_OWNER_NAME>>",
-          "repository_name": "<<GITHUB_REPO_NAME>>",
-          "ref": "<<GITHUB_REF>>",
-          "commit_id": "<<GITHUB_COMMIT_ID>>",
-          "username": "<<GITHUB_USERNAME>>",
-          "accesstoken": "<<GITHUB_ACCESS_TOKEN>>"
+          "file_path": "workflowengine-results.sarif.json"
         }
       }
     ],
