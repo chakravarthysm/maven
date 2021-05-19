@@ -25,7 +25,7 @@
       "githubUsername": "sig-chakrava",
       "githubToken": "<<GITHUB_ACCESS_TOKEN>>",
       "jiraProjectName": "DEV",
-      "jiraIssuesQuery": "<<JIRA_ISSUES_QUERY>>",
+      "jiraIssuesQuery": "project=dev",
       "jiraApiUrl": "https://dev-io.atlassian.net",
       "jiraUserName": "chakra.mithun@gmail.com",
       "jiraAuthToken": "<<JIRA_AUTH_TOKEN>>"
