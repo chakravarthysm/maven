@@ -1,7 +1,7 @@
 {
     "application": {
-      "appId": "maven",
-      "assetId": "maven",
+      "appId": "devio",
+      "assetId": "devio",
       "appType": "Webapp",
       "release": "<<RELEASE_TYPE>>",
       "projectLanguage": "Java",
