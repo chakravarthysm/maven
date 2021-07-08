@@ -4,6 +4,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
 jobs:
   build:
     runs-on: self-hosted     
@@ -12,7 +13,7 @@ jobs:
         
     - name: IO Scan
       id: prescription
-      uses: synopsys-sig/intelligent-security-scan@master
+      uses: synopsys-sig/intelligent-security-scan@fbf8d1a82cf1e3ed8c2660d95f657c2b64e9d1a1
       with:
         stage: "IO"
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
@@ -32,7 +33,7 @@ jobs:
     
     - name: Synopsys Intelligent Security Scan
       if: ${{steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true'}}
-      uses: synopsys-sig/intelligent-security-scan@master
+      uses: synopsys-sig/intelligent-security-scan@fbf8d1a82cf1e3ed8c2660d95f657c2b64e9d1a1
       with:
         ioServerURL: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
@@ -40,7 +41,7 @@ jobs:
         releaseType: "major"
         manifestType: "json"
         workflowVersion: "2021.04.2"
-        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --sensitive.package.pattern='.*(.java)'--detect.project.name=manojrbsnps/Testproj --detect.project.version.name=1.0 --jira.issues.query=project=DEV-01 --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --io.manifest.url=https://raw.githubusercontent.com/synopsys-sig/io-artifacts/v0.5-alpha/io-manifest-coverity.yml --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
+        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --sensitive.package.pattern='.*(.java)'--detect.project.name=manojrbsnps/Testproj --detect.project.version.name=1.0 --jira.issues.query=project=DEV-01 --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
         stage: "WORKFLOW"
 
     - name: Upload SARIF file
