@@ -13,7 +13,7 @@ jobs:
         
     - name: IO Scan
       id: prescription
-      uses: synopsys-sig/intelligent-security-scan@921c7ca257d45c28a3df889992e05c72cb4fed97
+      uses: synopsys-sig/intelligent-security-scan@b6dacf66094bc432472e08ca51881f2b7ad57d3b
       with:
         stage: "IO"
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
@@ -33,7 +33,7 @@ jobs:
     
     - name: Synopsys Intelligent Security Scan
       if: ${{steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true'}}
-      uses: synopsys-sig/intelligent-security-scan@921c7ca257d45c28a3df889992e05c72cb4fed97
+      uses: synopsys-sig/intelligent-security-scan@b6dacf66094bc432472e08ca51881f2b7ad57d3b
       with:
         ioServerURL: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
