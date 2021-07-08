@@ -1,0 +1,70 @@
+application:
+  appName: IO_DEMO
+  projectLanguage: Java
+  platformVersion: Java 8
+  buildSystem: Maven
+  riskMatrixRevision: default
+  sourceFilePattern: (?s).*((/[a-z]+)*)/src/main/java(?s).*
+  sensitivePackagePattern: (?s).*((/[a-z]+)*)/src/main/java/com/service/([A-Za-z]*).java(?s).*
+  fileChangeThreshold: 10
+    
+environment:
+  scm: github
+  testDeploymentRoot: "/"
+  enableJira: true
+  jiraProjectName: TFL1
+  jiraIssuesQuery: project=TFL1
+
+security:
+  pipeline:
+    type: "Inline"
+    toolchain: "Synopsys"
+    runSonar: true
+  activities:
+    sast:
+      rescanThreshold: 0
+    sca:
+      rescanThreshold: 0
+    dast:
+      rescanThreshold: 0
+    sastplusm:
+      rescanThreshold: 0
+    dastplusm:
+      rescanThreshold: 0
+    imageScan:
+      rescanThreshold: 0
+    
+template: high-risk 
+
+tool_information:
+- tool_name: seeker
+  enabled: true
+  fields:
+    project_name: Manoj-1_TEST
+- tool_name: tinfoil
+  enabled: true
+  fields:
+    api_id: 5547
+    
+buildbreaker:
+- activityname: sast
+  status:
+  - new
+  - open
+  overallseverity:
+  - high
+- activityname: sca
+  status:
+  - new
+  - open
+  overallseverity:
+  - high  
+- activityname: dast
+  status:
+  - new
+  overallseverity:
+  - high
+connectors:
+- connector_name: slack
+  fields:
+    channelidentifier: C01RF6ALQ49

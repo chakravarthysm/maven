@@ -19,10 +19,10 @@ jobs:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}        
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        workflowVersion: "2021.04.2"
+        workflowVersion: "2021.6.0"
         releaseType: "major"
         manifestType: "json"
-        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_AUTH_TOKEN}} --sensitive.package.pattern='.*(.java)' --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
+        additionalWorkflowArgs: "--persona=devsecops --slack.token=${{secrets.SLACK_TOKEN}} --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --github.token=${{secrets.GH_ATOKEN}} --detect.project.name=Synopsys-SIG-RnD/webgoat --detect.project.version.name=1.0 --polaris.project.name=sig-chakrava/maven --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --jira.auth.token=${{secrets.JIRA_AUTH_TOKEN}} --sensitive.package.pattern='.*(.java)' --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
     
      
     - name: Software Composition Analysis with Black Duck
@@ -40,8 +40,8 @@ jobs:
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         releaseType: "major"
         manifestType: "json"
-        workflowVersion: "2021.04.2"
-        additionalWorkflowArgs: "--slack.token=${{secrets.SLACK_TOKEN}} --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=Synopsys-SIG-RnD/webgoat --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --sensitive.package.pattern='.*(.java)'--detect.project.name=manojrbsnps/Testproj --detect.project.version.name=1.0 --jira.issues.query=project=DEV-01 --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
+        workflowVersion: "2021.6.0"
+        additionalWorkflowArgs: "--persona=devsecops --slack.token=${{secrets.SLACK_TOKEN}} --jira.assignee=Chakravarthy S M --slack_channel_id=${{secrets.SLACK_ID}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --github.token=${{secrets.GH_ATOKEN}} --polaris.project.name=sig-chakrava/maven --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --sensitive.package.pattern='.*(.java)'--detect.project.name=manojrbsnps/Testproj --detect.project.version.name=1.0 --jira.issues.query=project=DEV-01 --blackduck.project.name=Synopsys-SIG-RnD/webgoat:1.0 --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --coverity.url=${{secrets.COVERITY_URL}} --coverity.username=${{secrets.COVERITY_USERNAME}} --coverity.password=${{secrets.COVERITY_PASSWORD}}"
         stage: "WORKFLOW"
 
     - name: Upload SARIF file
